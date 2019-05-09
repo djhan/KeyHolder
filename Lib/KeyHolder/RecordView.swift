@@ -225,7 +225,10 @@ public protocol RecordViewDelegate: class {
         if window?.firstResponder != self { return false }
 
         let keyCodeInt = Int(theEvent.keyCode)
-        if isRecording && validateModifiers(inputModifiers) {
+        
+        // modifier 키 없이도 입력 가능하게 주석 처리
+        
+//        if isRecording && validateModifiers(inputModifiers) {
             let modifiers = KeyTransformer.carbonFlags(from: theEvent.modifierFlags)
             if let keyCombo = KeyCombo(keyCode: keyCodeInt, carbonModifiers: modifiers) {
                 if delegate?.recordView(self, canRecordKeyCombo: keyCombo) ?? true {
@@ -237,21 +240,21 @@ public protocol RecordViewDelegate: class {
                 }
             }
             return false
-        } else if isRecording && KeyTransformer.containsFunctionKey(keyCodeInt) {
-            if let keyCombo = KeyCombo(keyCode: keyCodeInt, carbonModifiers: 0) {
-                if delegate?.recordView(self, canRecordKeyCombo: keyCombo) ?? true {
-                    self.keyCombo = keyCombo
-                    didChange?(keyCombo)
-                    delegate?.recordView(self, didChangeKeyCombo: keyCombo)
-                    endRecording()
-                    return true
-                }
-            }
-            return false
-        } else if Int(theEvent.keyCode) == kVK_Space {
-            return beginRecording()
-        }
-        return false
+//        } else if isRecording && KeyTransformer.containsFunctionKey(keyCodeInt) {
+//            if let keyCombo = KeyCombo(keyCode: keyCodeInt, carbonModifiers: 0) {
+//                if delegate?.recordView(self, canRecordKeyCombo: keyCombo) ?? true {
+//                    self.keyCombo = keyCombo
+//                    didChange?(keyCombo)
+//                    delegate?.recordView(self, didChangeKeyCombo: keyCombo)
+//                    endRecording()
+//                    return true
+//                }
+//            }
+//            return false
+//        } else if Int(theEvent.keyCode) == kVK_Space {
+//            return beginRecording()
+//        }
+//        return false
     }
 
     override open func flagsChanged(with theEvent: NSEvent) {
